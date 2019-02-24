@@ -105,7 +105,7 @@
                         var fonts = ["font-family: 'Coiny', cursive;","font-family: 'PT Sans Narrow', sans-serif;","font-family: 'Staatliches', cursive;","font-family: 'Felipa', cursive;","font-family: 'Indie Flower', cursive;"];
                         for (var i = 0; i < this.arrData.length; i ++){
                             document.getElementById(this.arrData[i]).style.cssText = jsH.getRandFromArr(fonts);
-                            document.getElementById(this.arrData[i]).style.fontSize = jsH.getRandNum(80,300) + "%";
+                            document.getElementById(this.arrData[i]).style.fontSize = jsH.getRandNum(120,300) + "%";
                             if (jsH.getRandNum(0,10) === 1){
                                 document.getElementById(this.arrData[i]).style.fontSize = jsH.getRandNum(350,500) + "%";
                             }
