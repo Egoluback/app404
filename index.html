@@ -17,7 +17,7 @@
             <div id = "final" v-if = "isFinalVisible">
                 <a v-if = "isWin" href = "index.html" id = "linkFinal" title = "Начать заново">Вы победили!</a>
                 <a v-if = "isLose" href = "index.html" id = "linkFinal" title = "Начать заново">Вы проиграли!</a>
-                <br /><p>Это заняло {{record}} секунд.</p>
+                <br /><p>Время игры:{{record}} секунд.</p>
             </div>
         </div>
 
@@ -85,9 +85,7 @@
 
                             }
                             this.score++;
-                            // if ((this.score % 10) === 0){
                             app.createEff(true)
-                            // }
                             if (this.score === this.finishValue){
                                 this.record = record;
                                 this.isWin = true;
