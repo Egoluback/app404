@@ -1,0 +1,46 @@
+body{
+    background-color:rgb(255, 255, 255);
+    color:rgb(0, 0, 0);
+}
+
+.num{
+    width:3%;
+    height:0.3em;
+    font-size:400%;
+    background-color:rgb(255, 255, 255);
+    display:inline-block;
+    margin:5px;
+    text-align:center;
+    padding:3%;
+    color:rgb(0, 0, 0);
+    cursor:pointer;
+    transition:1s;
+    margin-top:-20px;
+}
+
+#main{
+    transition:1s;
+}
+
+#final{
+    font-size:800%;
+    text-align:center;
+    transition:1s;
+}
+
+#final a{
+    text-decoration:none;
+    color:rgb(0, 0, 0);
+}
+
+#linkFinal:hover{
+    text-decoration:underline rgb(0, 0, 0);
+}
+
+#final p{
+    font-size:40%;
+}
+
+.clicked{
+    color:green;
+}

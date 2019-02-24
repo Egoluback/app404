@@ -1,0 +1,128 @@
+﻿<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>404</title>
+        <link href = "css/main.css" rel = "stylesheet">
+        <link href = "https://fonts.googleapis.com/css?family=Coiny|Felipa|Indie+Flower|PT+Sans+Narrow|Staatliches&amp;subset=cyrillic" rel="stylesheet">
+        <script src = "vue.js"></script>
+        <script src = "jshelper/jshelper.js"></script>
+        <script src = "js/main.js"></script>
+    </head>
+    <body>
+        <div id = "page">
+            <div id = "main" v-if = 'isMainVisible'>
+                <div class = "num" v-for = "(num,value) in arrData" @click = "init(arrData[value])" :id = "num">{{num}}</div>
+            </div>
+            
+            <div id = "final" v-if = "isFinalVisible">
+                <a v-if = "isWin" href = "index.html" id = "linkFinal" title = "Начать заново">Вы победили!</a>
+                <a v-if = "isLose" href = "index.html" id = "linkFinal" title = "Начать заново">Вы проиграли!</a>
+                <br /><p>Это заняло {{record}} секунд.</p>
+            </div>
+        </div>
+
+        <script>
+            Array.prototype.remove = function(value) {
+                var idx = this.indexOf(value);
+                if (idx != -1) {
+                    // Второй параметр - число элементов, которые необходимо удалить
+                    return this.splice(idx, 1);
+                }
+                return false;
+            }
+            var record = 0;
+
+            var jsH = new JsHelper();
+            var app = new Vue({
+                el:"#page",
+                data:{
+                    arrData:[],
+                    score:0,
+                    isMainVisible:true,
+                    isFinalVisible:false,
+                    seconds:0,
+                    record:0,
+                    topValue:25,
+                    isWin:false,
+                    isLose:false,
+                    finishValue:404
+                },
+                created:function(){
+                    this.create();
+                    var interval = 1000;
+                    setInterval(function() {
+                        record ++;
+                    },interval)
+                },
+                methods:{
+                    create:function(){
+                        var valArr = [];
+                        for (var i = 1; i < this.topValue + 1; i++){
+                            var rNum = jsH.getRandNum(1,this.topValue);
+                            while (valArr.indexOf(rNum) != -1)
+                                rNum = jsH.getRandNum(1,this.topValue);
+                            valArr.push(rNum);
+                            this.arrData.push(rNum);
+                        }
+                    },
+                    init:function(num){
+                        if ((this.score + 1) == num){
+                            if (this.topValue != this.finishValue){
+                                this.topValue ++;
+                                const newTopValue = this.topValue;
+                                let numPos = this.arrData.indexOf(num);
+
+                                console.log(numPos);
+                                console.log(this.arrData[numPos]);
+
+                                this.arrData[numPos] = newTopValue;
+                                
+                                console.log(this.arrData[numPos],newTopValue);
+
+                                document.getElementById(num).innerText = newTopValue;
+                                document.getElementById(num).setAttribute('id',newTopValue);
+                            }else{
+                                this.arrData.remove(num);
+
+                            }
+                            this.score++;
+                            // if ((this.score % 10) === 0){
+                            app.createEff(true)
+                            // }
+                            if (this.score === this.finishValue){
+                                this.record = record;
+                                this.isWin = true;
+                                this.isMainVisible = false;
+                                this.isFinalVisible = true;
+                            }
+                        }else{
+                            this.record = record;
+                            this.isMainVisible = false;
+                            this.isFinalVisible = true;
+                            this.isLose = true;
+                        }
+                    },
+
+                    createEff:function(isMargin){
+                        var colours = ['red','green','blue','grey','orange','lightblue','yellow','black','brown'];
+                        var fonts = ["font-family: 'Coiny', cursive;","font-family: 'PT Sans Narrow', sans-serif;","font-family: 'Staatliches', cursive;","font-family: 'Felipa', cursive;","font-family: 'Indie Flower', cursive;"];
+                        for (var i = 0; i < this.arrData.length; i ++){
+                            document.getElementById(this.arrData[i]).style.cssText = jsH.getRandFromArr(fonts);
+                            document.getElementById(this.arrData[i]).style.fontSize = jsH.getRandNum(80,350) + "%";
+                            if (jsH.getRandNum(0,10) === 1){
+                                document.getElementById(this.arrData[i]).style.fontSize = jsH.getRandNum(450,650) + "%";
+                            }
+                            if (isMargin){
+                                document.getElementById(this.arrData[i]).style.marginLeft = jsH.getRandNum(25,50) + "px";
+                                document.getElementById(this.arrData[i]).style.marginRight = jsH.getRandNum(25,50) + "px";
+                            }
+                            document.getElementById(this.arrData[i]).style.color = jsH.getRandFromArr(colours);
+                        }
+                    }
+                }
+            });
+            
+            app.createEff(true);
+        </script>
+    </body>
+</html>
