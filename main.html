@@ -15,8 +15,8 @@
             </div>
             
             <div id = "final" v-if = "isFinalVisible">
-                <a v-if = "isWin" href = "index.html" id = "linkFinal" title = "Начать заново">Вы победили!</a>
-                <a v-if = "isLose" href = "index.html" id = "linkFinal" title = "Начать заново">Вы проиграли!</a>
+                <a v-if = "isWin" href = "main.html" id = "linkFinal" title = "Начать заново">Вы победили!</a>
+                <a v-if = "isLose" href = "main.html" id = "linkFinal" title = "Начать заново">Вы проиграли!</a>
                 <br /><p>Время игры:{{record}} секунд.</p>
             </div>
         </div>
@@ -105,9 +105,9 @@
                         var fonts = ["font-family: 'Coiny', cursive;","font-family: 'PT Sans Narrow', sans-serif;","font-family: 'Staatliches', cursive;","font-family: 'Felipa', cursive;","font-family: 'Indie Flower', cursive;"];
                         for (var i = 0; i < this.arrData.length; i ++){
                             document.getElementById(this.arrData[i]).style.cssText = jsH.getRandFromArr(fonts);
-                            document.getElementById(this.arrData[i]).style.fontSize = jsH.getRandNum(80,350) + "%";
+                            document.getElementById(this.arrData[i]).style.fontSize = jsH.getRandNum(80,300) + "%";
                             if (jsH.getRandNum(0,10) === 1){
-                                document.getElementById(this.arrData[i]).style.fontSize = jsH.getRandNum(450,650) + "%";
+                                document.getElementById(this.arrData[i]).style.fontSize = jsH.getRandNum(350,500) + "%";
                             }
                             if (isMargin){
                                 document.getElementById(this.arrData[i]).style.marginLeft = jsH.getRandNum(25,50) + "px";

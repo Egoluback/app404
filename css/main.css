@@ -17,7 +17,7 @@ body{
     color:rgb(0, 0, 0);
     cursor:pointer;
     transition:1s;
-    margin-top:-20px;
+    margin-top:-10px;
 }
 
 #main{
@@ -41,8 +41,4 @@ body{
 
 #final p{
     font-size:40%;
-}
-
-.clicked{
-    color:green;
 }
