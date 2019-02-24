@@ -1,2 +1,4 @@
 # app404
-Simple 404 game.
+Simple game.For win you must get to number 404.Click consecutive digits, and go up!
+
+
