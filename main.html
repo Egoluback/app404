@@ -15,24 +15,27 @@
             </div>
             
             <div id = "final" v-if = "isFinalVisible">
-                <a v-if = "isWin" href = "main.html" id = "linkFinal" title = "Начать заново">Вы победили!</a>
-                <a v-if = "isLose" href = "main.html" id = "linkFinal" title = "Начать заново">Вы проиграли!</a>
+                <a v-if = "isWin" href = "main.html" id = "linkFinal" title = "Начать с начала">Вы победили!</a>
+                <a v-if = "isLose" href = "main.html" id = "linkFinal" title = "Начать с начала">Вы проиграли!</a>
                 <br /><p>Время игры:{{record}} секунд.</p>
             </div>
         </div>
 
         <script>
+
             Array.prototype.remove = function(value) {
-                var idx = this.indexOf(value);
+                let idx = this.indexOf(value);
                 if (idx != -1) {
                     return this.splice(idx, 1);
                 }
                 return false;
             }
+
             var record = 0;
 
-            var jsH = new JsHelper();
-            var app = new Vue({
+            const jsH = new JsHelper();
+
+            const app = new Vue({
                 el:"#page",
                 data:{
                     arrData:[],
@@ -44,55 +47,53 @@
                     topValue:25,
                     isWin:false,
                     isLose:false,
-                    finishValue:404
+                    finishValue:35
                 },
+
                 created:function(){
                     this.create();
-                    var interval = 1000;
-                    setInterval(function() {
-                        record ++;
-                    },interval)
+                    const interval = 1000;
+                    setInterval(function() {record ++},interval);
                 },
+
                 methods:{
                     create:function(){
-                        var valArr = [];
-                        for (var i = 1; i < this.topValue + 1; i++){
-                            var rNum = jsH.getRandNum(1,this.topValue);
+                        let valArr = [];
+
+                        for (let i = 1; i < this.topValue + 1; i++){
+                            let rNum = jsH.getRandNum(1,this.topValue);
                             while (valArr.indexOf(rNum) != -1)
                                 rNum = jsH.getRandNum(1,this.topValue);
                             valArr.push(rNum);
                             this.arrData.push(rNum);
                         }
                     },
+
                     init:function(num){
-                        if ((this.score + 1) == num){
+                        if ((this.score + 1) === num){
                             if (this.topValue != this.finishValue){
                                 this.topValue ++;
                                 const newTopValue = this.topValue;
                                 let numPos = this.arrData.indexOf(num);
 
-                                console.log(numPos);
-                                console.log(this.arrData[numPos]);
-
                                 this.arrData[numPos] = newTopValue;
-                                
-                                console.log(this.arrData[numPos],newTopValue);
 
                                 document.getElementById(num).innerText = newTopValue;
                                 document.getElementById(num).setAttribute('id',newTopValue);
-                            }else{
+                            } else{
                                 this.arrData.remove(num);
-
                             }
+
                             this.score++;
                             app.createEff(true)
+
                             if (this.score === this.finishValue){
                                 this.record = record;
                                 this.isWin = true;
                                 this.isMainVisible = false;
                                 this.isFinalVisible = true;
                             }
-                        }else{
+                        } else{
                             this.record = record;
                             this.isMainVisible = false;
                             this.isFinalVisible = true;
@@ -101,18 +102,20 @@
                     },
 
                     createEff:function(isMargin){
-                        var colours = ['red','green','blue','grey','orange','lightblue','yellow','black','brown'];
-                        var fonts = ["font-family: 'Coiny', cursive;","font-family: 'PT Sans Narrow', sans-serif;","font-family: 'Staatliches', cursive;","font-family: 'Felipa', cursive;","font-family: 'Indie Flower', cursive;"];
-                        for (var i = 0; i < this.arrData.length; i ++){
+                        let colours = ['red','green','blue','grey','orange','lightblue','yellow','black','brown'];
+                        let fonts = ["font-family: 'Coiny', cursive;","font-family: 'PT Sans Narrow', sans-serif;","font-family: 'Staatliches', cursive;","font-family: 'Felipa', cursive;","font-family: 'Indie Flower', cursive;"];
+                        
+                        for (let i = 0; i < this.arrData.length; i ++){
                             document.getElementById(this.arrData[i]).style.cssText = jsH.getRandFromArr(fonts);
                             document.getElementById(this.arrData[i]).style.fontSize = jsH.getRandNum(120,300) + "%";
-                            if (jsH.getRandNum(0,10) === 1){
+                            if (jsH.getRandNum(0,10) === 1)
                                 document.getElementById(this.arrData[i]).style.fontSize = jsH.getRandNum(350,500) + "%";
-                            }
+                            
                             if (isMargin){
                                 document.getElementById(this.arrData[i]).style.marginLeft = jsH.getRandNum(25,50) + "px";
                                 document.getElementById(this.arrData[i]).style.marginRight = jsH.getRandNum(25,50) + "px";
                             }
+
                             document.getElementById(this.arrData[i]).style.color = jsH.getRandFromArr(colours);
                         }
                     }
