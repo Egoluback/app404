@@ -25,7 +25,6 @@ body{
 }
 
 #final{
-    font-size:800%;
     text-align:center;
     transition:1s;
 }
@@ -35,10 +34,22 @@ body{
     color:rgb(0, 0, 0);
 }
 
+#linkFinal{
+    font-size:800%; 
+}
+
 #linkFinal:hover{
     text-decoration:underline rgb(0, 0, 0);
 }
 
-#final p{
-    font-size:40%;
+infLink:hover{
+    text-decoration:underline rgb(0, 0, 0);
+}
+
+.inf{
+    font-size:350%;
+}
+
+.dopInf{
+    font-size:120%;
 }

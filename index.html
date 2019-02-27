@@ -15,9 +15,11 @@
             </div>
             
             <div id = "final" v-if = "isFinalVisible">
-                <a v-if = "isWin" href = "main.html" id = "linkFinal" title = "Начать с начала">Вы победили!</a>
-                <a v-if = "isLose" href = "main.html" id = "linkFinal" title = "Начать с начала">Вы проиграли!</a>
-                <br /><p>Время игры:{{record}} секунд.</p>
+                <a v-if = "isWin" href = "index.html" id = "linkFinal" title = "Начать с начала">Вы победили!</a>
+                <a v-if = "isLose" href = "index.html" id = "linkFinal" title = "Начать с начала">Вы проиграли!</a>
+                <br /><a href = "#" class = "inf" id = "infLink" @click = "changeIsShowed()" title = "Показать доп. информацию">Время игры:{{record}} секунд.</a>
+                <p v-if = "isWin && isShowedDopInf" class = "dopInf">Вы потратили примерно {{record / finishValue}} секунд на каждый ход.</p>
+                <p v-else-if = "!isWin">Информация недоступна.</p>
             </div>
         </div>
 
@@ -47,7 +49,8 @@
                     topValue:25,
                     isWin:false,
                     isLose:false,
-                    finishValue:35
+                    finishValue:404,
+                    isShowedDopInf:false
                 },
 
                 created:function(){
@@ -67,6 +70,10 @@
                             valArr.push(rNum);
                             this.arrData.push(rNum);
                         }
+                    },
+
+                    changeIsShowed:function(){
+                        this.isShowedDopInf = !this.isShowedDopInf;
                     },
 
                     init:function(num){
