@@ -4,6 +4,7 @@
         <title>404</title>
         <link href = "css/main.css" rel = "stylesheet">
         <link href = "https://fonts.googleapis.com/css?family=Coiny|Felipa|Indie+Flower|PT+Sans+Narrow|Staatliches&amp;subset=cyrillic" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Chonburi|Indie+Flower|Nanum+Gothic|Srisakdi|ZCOOL+QingKe+HuangYou" rel="stylesheet">
         <script src = "vue.js"></script>
         <script src = "jshelper/jshelper.js"></script>
         <script src = "js/main.js"></script>
@@ -79,11 +80,12 @@
                     init:function(num){
                         if ((this.score + 1) === num){
                             if (this.topValue != this.finishValue){
+                                let numIndex = this.arrData.indexOf(num);
+
                                 this.topValue ++;
                                 const newTopValue = this.topValue;
-                                let numPos = this.arrData.indexOf(num);
 
-                                this.arrData[numPos] = newTopValue;
+                                this.arrData[numIndex] = newTopValue;
 
                                 document.getElementById(num).innerText = newTopValue;
                                 document.getElementById(num).setAttribute('id',newTopValue);
@@ -109,21 +111,40 @@
                     },
 
                     createEff:function(isMargin){
-                        let colours = ['red','green','blue','grey','orange','lightblue','yellow','black','brown'];
-                        let fonts = ["font-family: 'Coiny', cursive;","font-family: 'PT Sans Narrow', sans-serif;","font-family: 'Staatliches', cursive;","font-family: 'Felipa', cursive;","font-family: 'Indie Flower', cursive;"];
+                        const colours = ['red',
+                        'green',
+                        'blue',
+                        'grey',
+                        'orange',
+                        'lightblue',
+                        'yellow',
+                        'black',
+                        'brown'];
+
+                        const fonts = ["font-family: 'Coiny', cursive;",
+                        "font-family: 'PT Sans Narrow', sans-serif;",
+                        "font-family: 'Staatliches', cursive;",
+                        "font-family: 'Felipa', cursive;",
+                        "font-family: 'Indie Flower', cursive;",
+                        "font-family: 'Srisakdi', cursive;",
+                        "font-family: 'ZCOOL QingKe HuangYou', cursive;",
+                        "font-family: 'Nanum Gothic', sans-serif;",
+                        "font-family: 'Chonburi', cursive;",
+                        "font-family: 'Indie Flower', cursive;"];
                         
                         for (let i = 0; i < this.arrData.length; i ++){
-                            document.getElementById(this.arrData[i]).style.cssText = jsH.getRandFromArr(fonts);
-                            document.getElementById(this.arrData[i]).style.fontSize = jsH.getRandNum(120,300) + "%";
+                            const element = document.getElementById(this.arrData[i]);
+                            element.style.cssText = jsH.getRandFromArr(fonts);
+                            element.style.fontSize = jsH.getRandNum(120,300) + "%";
                             if (jsH.getRandNum(0,10) === 1)
-                                document.getElementById(this.arrData[i]).style.fontSize = jsH.getRandNum(350,500) + "%";
+                                element.style.fontSize = jsH.getRandNum(350,500) + "%";
                             
                             if (isMargin){
-                                document.getElementById(this.arrData[i]).style.marginLeft = jsH.getRandNum(25,50) + "px";
-                                document.getElementById(this.arrData[i]).style.marginRight = jsH.getRandNum(25,50) + "px";
+                                element.style.marginLeft = jsH.getRandNum(25,50) + "px";
+                                element.style.marginRight = jsH.getRandNum(25,50) + "px";
                             }
 
-                            document.getElementById(this.arrData[i]).style.color = jsH.getRandFromArr(colours);
+                            element.style.color = jsH.getRandFromArr(colours);
                         }
                     }
                 }
