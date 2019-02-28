@@ -1,20 +1,36 @@
 /* MAIN.CSS */
 
 body{
-    background-color:rgb(255, 255, 255);
-    color:rgb(0, 0, 0);
+    background-color:rgb(29, 25, 25);
+    color:white;
+}
+
+.transMain-enter-active, .transMain-leave-active{
+    transition: all 0.8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+
+.transMain-enter, .transMain-leave-to{
+    transform: translateY(-100%);
+}
+
+.transFinal-enter-active, .transFinal-leave-active{
+    transition: all 0.8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+
+.transFinal-enter, .transFinal-leave-to{
+    transform: translateX(-100%);
 }
 
 .num{
     width:auto;
     height:0.3em;
     font-size:400%;
-    background-color:rgb(255, 255, 255);
+    background-color:rgb(29, 25, 25);
     display:inline-block;
     margin:5px;
     text-align:center;
     padding:3%;
-    color:rgb(0, 0, 0);
+    color:white;
     cursor:pointer;
     transition:1s;
     margin-top:-10px;
@@ -31,7 +47,7 @@ body{
 
 #final a{
     text-decoration:none;
-    color:rgb(0, 0, 0);
+    color:white;
 }
 
 #linkFinal{
@@ -39,11 +55,11 @@ body{
 }
 
 #linkFinal:hover{
-    text-decoration:underline rgb(0, 0, 0);
+    text-decoration:underline white;
 }
 
 infLink:hover{
-    text-decoration:underline rgb(0, 0, 0);
+    text-decoration:underline white;
 }
 
 .inf{

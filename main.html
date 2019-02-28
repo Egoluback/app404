@@ -11,17 +11,21 @@
     </head>
     <body>
         <div id = "page">
-            <div id = "main" v-if = 'isMainVisible'>
-                <div class = "num" v-for = "(num,value) in arrData" @click = "init(arrData[value])" :id = "num">{{num}}</div>
-            </div>
+            <transition name="transMain">    
+                <div id = "main" v-if = 'isMainVisible'>
+                    <div class = "num" v-for = "(num,value) in arrData" @click = "init(arrData[value])" :id = "num">{{num}}</div>
+                </div>
+            </transition>
             
-            <div id = "final" v-if = "isFinalVisible">
-                <a v-if = "isWin" href = "main.html" id = "linkFinal" title = "Начать с начала">Вы победили!</a>
-                <a v-if = "isLose" href = "main.html" id = "linkFinal" title = "Начать с начала">Вы проиграли!</a>
-                <br /><a href = "#" class = "inf" id = "infLink" @click = "changeIsShowed()" title = "Показать доп. информацию">Время игры:{{record}} секунд.</a>
-                <p v-if = "isWin && isShowedDopInf" class = "dopInf">Вы потратили примерно {{record / finishValue}} секунд на каждый ход.</p>
-                <p v-else-if = "!isWin && isShowedDopInf">Дополнительная информация недоступна.</p>
-            </div>
+            <transition name = "transFinal">
+                <div id = "final" v-if = "isFinalVisible">
+                    <a v-if = "isWin" href = "#" @click = "reload()" id = "linkFinal" title = "Начать с начала">Вы победили!</a>
+                    <a v-if = "isLose" href = "#" @click = "reload()" id = "linkFinal" title = "Начать с начала">Вы проиграли!</a>
+                    <br /><a href = "#" class = "inf" id = "infLink" @click = "changeIsShowed()" title = "Показать доп. информацию">Время игры:{{record}} секунд.</a>
+                    <p v-if = "isWin && isShowedDopInf" class = "dopInf">Вы потратили примерно {{record / finishValue}} секунд на каждый ход.</p>
+                    <p v-else-if = "!isWin && isShowedDopInf">Дополнительная информация недоступна.</p>
+                </div>
+            </transition>
         </div>
 
         <script>
@@ -47,27 +51,27 @@
                     isFinalVisible:false,
                     seconds:0,
                     record:0,
-                    topValue:25,
+                    countNumbers:25,
                     isWin:false,
                     isLose:false,
-                    finishValue:404,
-                    isShowedDopInf:false
+                    finishValue:30,
+                    isShowedDopInf:false,
+                    mainInterval:setInterval(function() {record ++},1000)
                 },
 
                 created:function(){
                     this.create();
-                    const interval = 1000;
-                    setInterval(function() {record ++},interval);
                 },
 
                 methods:{
+
                     create:function(){
                         let valArr = [];
 
-                        for (let i = 1; i < this.topValue + 1; i++){
-                            let rNum = jsH.getRandNum(1,this.topValue);
+                        for (let i = 1; i < this.countNumbers + 1; i++){
+                            let rNum = jsH.getRandNum(1,this.countNumbers);
                             while (valArr.indexOf(rNum) != -1)
-                                rNum = jsH.getRandNum(1,this.topValue);
+                                rNum = jsH.getRandNum(1,this.countNumbers);
                             valArr.push(rNum);
                             this.arrData.push(rNum);
                         }
@@ -79,22 +83,22 @@
 
                     init:function(num){
                         if ((this.score + 1) === num){
-                            if (this.topValue != this.finishValue){
+                            if (this.countNumbers != this.finishValue){
                                 let numIndex = this.arrData.indexOf(num);
 
-                                this.topValue ++;
-                                const newTopValue = this.topValue;
+                                this.countNumbers ++;
+                                const newcountNumbers = this.countNumbers;
 
-                                this.arrData[numIndex] = newTopValue;
+                                this.arrData[numIndex] = newcountNumbers;
 
-                                document.getElementById(num).innerText = newTopValue;
-                                document.getElementById(num).setAttribute('id',newTopValue);
+                                document.getElementById(num).innerText = newcountNumbers;
+                                document.getElementById(num).setAttribute('id',newcountNumbers);
                             } else{
                                 this.arrData.remove(num);
                             }
 
                             this.score++;
-                            app.createEff(true)
+                            app.createEff()
 
                             if (this.score === this.finishValue){
                                 this.record = record;
@@ -110,7 +114,7 @@
                         }
                     },
 
-                    createEff:function(isMargin){
+                    createEff:function(){
                         const colours = ['red',
                         'green',
                         'blue',
@@ -131,26 +135,69 @@
                         "font-family: 'Nanum Gothic', sans-serif;",
                         "font-family: 'Chonburi', cursive;",
                         "font-family: 'Indie Flower', cursive;"];
+
+                        const backgroundColor = ['background:url(img/image1.jpg) no-repeat center/cover;',
+                        'background:url(img/image2.jpg) no-repeat center/cover;',
+                        'background:url(img/image3.jpg) no-repeat center/cover;',
+                        'background:url(img/image4.jpg) no-repeat center/cover;',
+                        'background:url(img/image5.jpg) no-repeat center/cover;',
+                        'background:url(img/image6.jpg) no-repeat center/cover;',
+                        'background:url(img/image7.jpg) no-repeat center/cover;',
+                        'background:url(img/image8.jpg) no-repeat center/cover;',
+                        'background:url(img/image9.jpg) no-repeat center/cover;',
+                        'background:url(img/image10.jpg) no-repeat center/cover;',
+                        'background:url(img/gif1.gif) no-repeat center/cover;',
+                        'background:url(img/gif2.gif) no-repeat center/cover;']
                         
                         for (let i = 0; i < this.arrData.length; i ++){
                             const element = document.getElementById(this.arrData[i]);
+                            console.log(document.getElementById(this.arrData[i]),this.arrData[i]);
                             element.style.cssText = jsH.getRandFromArr(fonts);
-                            element.style.fontSize = jsH.getRandNum(120,300) + "%";
-                            if (jsH.getRandNum(0,10) === 1)
-                                element.style.fontSize = jsH.getRandNum(350,500) + "%";
-                            
-                            if (isMargin){
-                                element.style.marginLeft = jsH.getRandNum(25,50) + "px";
-                                element.style.marginRight = jsH.getRandNum(25,50) + "px";
+                            let isImage = jsH.getRandNum(0,20);
+                            if (isImage > 10){
+                                element.style.cssText = jsH.getRandFromArr(backgroundColor) + '-webkit-background-clip:text;-webkit-text-fill-color:transparent;';
                             }
+                            else
+                                element.style.color = jsH.getRandFromArr(colours);
+                            element.style.fontSize = jsH.getRandNum(120,250) + "%";
+                            if (jsH.getRandNum(0,10) === 1)
+                                element.style.fontSize = jsH.getRandNum(300,340) + "%";
+                            
+                            element.style.marginLeft = jsH.getRandNum(25,50) + "px";
+                            element.style.marginRight = jsH.getRandNum(25,50) + "px";
 
-                            element.style.color = jsH.getRandFromArr(colours);
                         }
+                        
+                    },
+                    reload:function(){
+
+                        this.arrData = [];
+                        this.score = 0;
+                        this.isMainVisible = true;
+                        this.isFinalVisible = false;
+                        this.seconds = 0;
+                        this.record = 0;
+                        this.countNumbers = 25;
+                        this.isWin = false;
+                        this.isLose = false;
+                        this.finishValue = 30;
+                        this.isShowedDopInf = false;
+
+                        this.create();
+
+                        record = 0;
+                        clearInterval(this.mainInterval);
+
+                        this.mainInterval = setInterval(function() {record ++;},1000);
+
+                        setTimeout(function(){
+                            app.createEff();}
+                        ,10);
                     }
                 }
             });
             
-            app.createEff(true);
+            app.createEff();
         </script>
     </body>
 </html>
