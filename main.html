@@ -11,7 +11,7 @@
     </head>
     <body>
         <div id = "page">
-            <transition name="transMain">    
+            <transition name = "transMain">    
                 <div id = "main" v-if = 'isMainVisible'>
                     <div class = "num" v-for = "(num,value) in arrData" @click = "init(arrData[value])" :id = "num">{{num}}</div>
                 </div>
@@ -22,13 +22,14 @@
                     <a v-if = "isWin" href = "#" @click = "reload()" id = "linkFinal" title = "Начать с начала">Вы победили!</a>
                     <a v-if = "isLose" href = "#" @click = "reload()" id = "linkFinal" title = "Начать с начала">Вы проиграли!</a>
                     <br /><a href = "#" class = "inf" id = "infLink" @click = "changeIsShowed()" title = "Показать доп. информацию">Время игры:{{record}} секунд.</a>
-                    <p v-if = "isWin && isShowedDopInf" class = "dopInf">Вы потратили примерно {{record / finishValue}} секунд на каждый ход.</p>
-                    <p v-else-if = "!isWin && isShowedDopInf">Дополнительная информация недоступна.</p>
+                    <p v-if = "isShowedDopInf && isResults" class = "dopInf">Вы потратили примерно {{record / recordScore}} секунд на каждый ход.</p>
+                    <p v-else-if = "!isResults">Дополнительная информация недоступна.</p>
                 </div>
             </transition>
         </div>
 
         <script>
+            
 
             Array.prototype.remove = function(value) {
                 let idx = this.indexOf(value);
@@ -56,7 +57,12 @@
                     isLose:false,
                     finishValue:30,
                     isShowedDopInf:false,
-                    mainInterval:setInterval(function() {record ++},1000)
+                    mainInterval:setInterval(function() {record ++},1000),
+                    recordScore:0,
+                    isResults:false,
+                    isPhone:false,
+                    width:window.screen.width,
+                    height:window.screen.height
                 },
 
                 created:function(){
@@ -66,12 +72,19 @@
                 methods:{
 
                     create:function(){
+                        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                            this.isPhone = true;
+                        }
+
                         let valArr = [];
+                        
 
                         for (let i = 1; i < this.countNumbers + 1; i++){
                             let rNum = jsH.getRandNum(1,this.countNumbers);
+
                             while (valArr.indexOf(rNum) != -1)
                                 rNum = jsH.getRandNum(1,this.countNumbers);
+                                
                             valArr.push(rNum);
                             this.arrData.push(rNum);
                         }
@@ -98,19 +111,74 @@
                             }
 
                             this.score++;
+
                             app.createEff()
 
                             if (this.score === this.finishValue){
-                                this.record = record;
-                                this.isWin = true;
-                                this.isMainVisible = false;
-                                this.isFinalVisible = true;
+                                try{
+                                    this.record = record;
+                                    this.recordScore = this.score;
+                                    this.isWin = true;
+                                    this.isMainVisible = false;
+                                    this.isFinalVisible = true;
+                                    this.isResults = true;
+                                    if (isPhone){
+                                        document.getElementById('linkFinal').style.fontSize = getFontSize(true) + '%';
+                                        document.getElementById('infLink').style.fontSize = getFontSize(false) + '%';
+                                        document.getElementById('dopInf').style.fontSize = getFontSize(false) + '%';
+                                    }
+
+                                    if (this.recordScore == 0)
+                                        throw new Error("Ошибка:вы ни разу не нажали правильно.");
+
+                                }catch(e){
+                                    if (e.name == 'SyntaxError'){
+                                        console.log(e.message);
+                                        this.isResults = false;
+                                    }
+                                }
                             }
                         } else{
-                            this.record = record;
-                            this.isMainVisible = false;
-                            this.isFinalVisible = true;
-                            this.isLose = true;
+                            try{
+                                this.record = record;
+                                this.recordScore = this.score;
+                                this.isLose = true;
+                                this.isMainVisible = false;
+                                this.isFinalVisible = true;
+                                if (this.recordScore == 0)
+                                    throw new SyntaxError("Ошибка:вы ни разу не нажали правильно.");
+                                this.isResults = true;
+                                if (isPhone){
+                                    document.getElementById('linkFinal').style.fontSize = getFontSize(true) + '%';
+                                    document.getElementById('infLink').style.fontSize = getFontSize(false) + '%';
+                                    document.getElementById('dopInf').style.fontSize = getFontSize(false) + '%';
+                                }
+
+                            }catch(e){
+                                if (e.name == 'SyntaxError'){
+                                    console.log(e.message);
+                                    this.isResults = false;
+                                }
+                            }
+                        }
+                    },
+
+                    getFontSize(isBig){
+                        if (this.width > 1366 && this.height > 768){
+                            if (!isBig)
+                                return jsH.getRandNum(150,300);
+                            else
+                                return jsH.getRandNum(340,400);
+                        }else if ((this.width < 1366 && this.height < 768) && this.width > 900){
+                            if (!isBig)
+                                return jsH.getRandNum(120,250);
+                            else
+                                return jsH.getRandNum(300,340);
+                        }else{
+                            if (!isBig)
+                                return jsH.getRandNum(60,120);
+                            else
+                                return jsH.getRandNum(100,130);
                         }
                     },
 
@@ -146,41 +214,47 @@
                         'background:url(img/image8.jpg) no-repeat center/cover;',
                         'background:url(img/image9.jpg) no-repeat center/cover;',
                         'background:url(img/image10.jpg) no-repeat center/cover;',
+                        'background:url(img/image11.png) no-repeat center/cover;',
+                        'background:url(img/image12.png) no-repeat center/cover;',
                         'background:url(img/gif1.gif) no-repeat center/cover;',
-                        'background:url(img/gif2.gif) no-repeat center/cover;']
+                        'background:url(img/gif2.gif) no-repeat center/cover;',
+                        'background:url(img/gif3.gif) no-repeat center/cover;',
+                        'background:url(img/gif4.gif) no-repeat center/cover;']
                         
                         for (let i = 0; i < this.arrData.length; i ++){
-                            const element = document.getElementById(this.arrData[i]);
-                            console.log(document.getElementById(this.arrData[i]),this.arrData[i]);
-                            element.style.cssText = jsH.getRandFromArr(fonts);
-                            let isImage = jsH.getRandNum(0,20);
-                            if (isImage > 10){
-                                element.style.cssText = jsH.getRandFromArr(backgroundColor) + '-webkit-background-clip:text;-webkit-text-fill-color:transparent;';
+                            try{
+                                const element = document.getElementById(this.arrData[i]);
+                                let isImage = jsH.getRandNum(0,20);
+
+                                element.style.cssText = jsH.getRandFromArr(fonts);
+
+                                if (isImage > 10)
+                                    element.style.cssText = jsH.getRandFromArr(backgroundColor) + '-webkit-background-clip:text;-webkit-text-fill-color:transparent;';
+                                else
+                                    element.style.color = jsH.getRandFromArr(colours);
+
+                                element.style.fontSize = this.getFontSize(false) + '%';
+                                if (jsH.getRandNum(0,10) === 1)
+                                    element.style.fontSize = this.getFontSize(true) + '%';
+
+                                element.style.marginLeft = jsH.getRandNum(25,50) + "px";
+                                element.style.marginRight = jsH.getRandNum(25,50) + "px";
+                            }catch(e){
+                                console.log("Ошибка:" + e.name + e.message);
                             }
-                            else
-                                element.style.color = jsH.getRandFromArr(colours);
-                            element.style.fontSize = jsH.getRandNum(120,250) + "%";
-                            if (jsH.getRandNum(0,10) === 1)
-                                element.style.fontSize = jsH.getRandNum(300,340) + "%";
-                            
-                            element.style.marginLeft = jsH.getRandNum(25,50) + "px";
-                            element.style.marginRight = jsH.getRandNum(25,50) + "px";
 
                         }
                         
                     },
                     reload:function(){
-
                         this.arrData = [];
                         this.score = 0;
                         this.isMainVisible = true;
                         this.isFinalVisible = false;
                         this.seconds = 0;
                         this.record = 0;
-                        this.countNumbers = 25;
                         this.isWin = false;
                         this.isLose = false;
-                        this.finishValue = 30;
                         this.isShowedDopInf = false;
 
                         this.create();
@@ -191,8 +265,8 @@
                         this.mainInterval = setInterval(function() {record ++;},1000);
 
                         setTimeout(function(){
-                            app.createEff();}
-                        ,10);
+                            app.createEff();
+                        },10);
                     }
                 }
             });
