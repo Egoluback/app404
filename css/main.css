@@ -11,28 +11,25 @@ body{
 
 #mainInfo{
     position:absolute;
-    left:30%;
-    top:22%;
+    left:32.5%;
+    top:15%;
     text-align:center;
     margin-bottom:5%;
     padding:1%;
     border-width:0;
     border-radius:5px;
     background-color:#ebe7e3;
+    box-shadow:0 3px 26.46px 0.54px rgba(0,0,0,0.1);
 }
 
-/* .ui-widget-header{
-    background-color:rgb(231, 231, 231);
+#mainInfo-link a{
+    color:blue;
+    text-decoration:none;
 }
 
-.ui-widget{
-    box-shadow:2px 2px 2px black; 
-    background-color:rgb(231, 231, 231);
-} */
-
-/* .ui-icon-closethick{
-    box-shadow:0;
-} */
+#mainInfo a:hover{
+    text-decoration:underline blue;
+}
 
 #mainInfo-butt-close{
     float:right;
@@ -48,11 +45,11 @@ body{
 }
 
 #mainInfo-title{
+    margin-top:10%;
     font-size:750%;
 }
 
 #mainInfo-info{
-    /* margin-bottom:5%; */
     font-size:200%;
 }
 

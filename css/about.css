@@ -1,0 +1,33 @@
+*{
+    padding:0;
+    margin:0;
+}
+
+body{
+    background-color:white;
+    padding:0.5%;
+}
+
+#main{
+    background-color:rgb(248, 248, 248);
+    padding:0.5%;
+    border-radius:5px;
+}
+
+h1{
+    font-size:350%;
+}
+
+p{
+    font-size:150%;
+}
+
+a{
+    color:blue;
+    text-decoration:none;
+    font-size:150%;
+}
+
+a:hover{
+    text-decoration:underline blue;
+}

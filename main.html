@@ -20,7 +20,8 @@
             </button>
             <div id = "mainInfo-title">404</div>
             <div id = "mainInfo-info">Страница не найдена.</div>
-            <div id = "mainInfo-train">Страница не найдена - попробуйте найти цифры от 1 до 404.</div>
+            <div id = "mainInfo-train">В таком случае, попробуйте найти цифры от 1 до 404.</div>
+            <div id = "mainInfo-link"><a href = "about.html" title = "Об игре">Подробнее...</a></div>
         </div>
 
         <div id = "page">
@@ -36,7 +37,7 @@
                     <a v-if = "isWin" href = "#" @click = "reload()" id = "linkFinal" title = "Начать с начала">Вы победили!</a>
                     <a v-if = "isLose" href = "#" @click = "reload()" id = "linkFinal" title = "Начать с начала">Вы проиграли!</a>
                     <br /><a href = "#" class = "inf" id = "infLink" @click = "changeIsShowed()" title = "Показать доп. информацию">Время игры:{{record}} секунд.</a>
-                    <p v-if = "isShowedDopInf && isResults" class = "dopInf">Вы потратили примерно {{record / recordScore}} секунд на каждый ход.</p>
+                    <p v-if = "isShowedDopInf && isResults" class = "dopInf">Вы потратили примерно {{Math.round(record / recordScore)}} секунд(ы) на каждый ход.</p>
                     <p v-else-if = "!isResults">Дополнительная информация недоступна.</p>
                 </div>
             </transition>
@@ -88,7 +89,6 @@
 
                         let valArr = [];
                         
-
                         for (let i = 1; i < this.countNumbers + 1; i++){
                             let rNum = jsH.getRandNum(1,this.countNumbers);
 
@@ -130,18 +130,14 @@
                                     this.recordScore = this.score;
                                     this.isWin = true;
                                     this.isMainVisible = false;
+
                                     setTimeout(function(){
                                         app.isFinalVisible = true;
                                     },800);
-                                    this.isResults = true;
-                                    // if (this.isPhone){
-                                    //     document.getElementById('linkFinal').style.fontSize = getFontSize(true) + '%';
-                                    //     document.getElementById('infLink').style.fontSize = getFontSize(false) + '%';
-                                    //     document.getElementById('dopInf').style.fontSize = getFontSize(false) + '%';
-                                    // }
-
+                                    
                                     if (this.recordScore == 0)
                                         throw new Error("Ошибка:вы ни разу не нажали правильно.");
+                                    this.isResults = true;
 
                                 }catch(e){
                                     if (e.name == 'SyntaxError'){
@@ -156,18 +152,14 @@
                                 this.recordScore = this.score;
                                 this.isLose = true;
                                 this.isMainVisible = false;
+
                                 setTimeout(function(){
                                     app.isFinalVisible = true;
                                 },800);
-                                // this.isFinalVisible = true;
+
                                 if (this.recordScore == 0)
                                     throw new SyntaxError("Ошибка:вы ни разу не нажали правильно.");
                                 this.isResults = true;
-                                // if (this.isPhone){
-                                //     document.getElementById('linkFinal').style.fontSize = getFontSize(true) + '%';
-                                //     document.getElementById('infLink').style.fontSize = getFontSize(false) + '%';
-                                //     document.getElementById('dopInf').style.fontSize = getFontSize(false) + '%';
-                                // }
 
                             }catch(e){
                                 if (e.name == 'SyntaxError'){
@@ -203,12 +195,12 @@
                         'blue',
                         'grey',
                         'orange',
-                        'lightblue',
-                        'yellow',
+                        // 'lightblue',
                         'black',
                         'brown'];
 
-                        const fonts = ["font-family: 'Coiny', cursive;",
+                        const fonts = [
+                        "font-family: 'Coiny', cursive;",
                         "font-family: 'PT Sans Narrow', sans-serif;",
                         "font-family: 'Staatliches', cursive;",
                         "font-family: 'Felipa', cursive;",
@@ -219,22 +211,24 @@
                         "font-family: 'Chonburi', cursive;",
                         "font-family: 'Indie Flower', cursive;"];
 
-                        const backgroundColor = ['background:url(img/image1.jpg) no-repeat center/cover;',
-                        'background:url(img/image2.jpg) no-repeat center/cover;',
+                        const backgroundColor = [
                         'background:url(img/image3.jpg) no-repeat center/cover;',
                         'background:url(img/image4.jpg) no-repeat center/cover;',
-                        'background:url(img/image5.jpg) no-repeat center/cover;',
                         'background:url(img/image6.jpg) no-repeat center/cover;',
                         'background:url(img/image7.jpg) no-repeat center/cover;',
                         'background:url(img/image8.jpg) no-repeat center/cover;',
                         'background:url(img/image9.jpg) no-repeat center/cover;',
                         'background:url(img/image10.jpg) no-repeat center/cover;',
-                        'background:url(img/image11.png) no-repeat center/cover;',
+                        'background:url(img/image13.jpg) no-repeat center/cover;',
+                        'background:url(img/image14.jpg) no-repeat center/cover;',
+                        'background:url(img/image15.jpg) no-repeat center/cover;',
+                        'background:url(img/image16.jpg) no-repeat center/cover;',
+                        'background:url(img/image17.jpg) no-repeat center/cover;',
+                        'background:url(img/image18.jpg) no-repeat center/cover;',
                         'background:url(img/image12.png) no-repeat center/cover;',
                         'background:url(img/gif1.gif) no-repeat center/cover;',
                         'background:url(img/gif2.gif) no-repeat center/cover;',
-                        'background:url(img/gif3.gif) no-repeat center/cover;',
-                        'background:url(img/gif4.gif) no-repeat center/cover;']
+                        'background:url(img/gif3.gif) no-repeat center/cover;']
                         
                         for (let i = 0; i < this.arrData.length; i ++){
                             try{
