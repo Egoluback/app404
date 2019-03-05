@@ -1,8 +1,59 @@
 /* MAIN.CSS */
 
+*{
+    outline:none;
+}
+
 body{
-    background-color:rgb(29, 25, 25);
-    color:white;
+    background-color:rgb(255, 255, 255);
+    color:rgb(0, 0, 0);
+}
+
+#mainInfo{
+    position:absolute;
+    left:30%;
+    top:22%;
+    text-align:center;
+    margin-bottom:5%;
+    padding:1%;
+    border-width:0;
+    border-radius:5px;
+    background-color:#ebe7e3;
+}
+
+/* .ui-widget-header{
+    background-color:rgb(231, 231, 231);
+}
+
+.ui-widget{
+    box-shadow:2px 2px 2px black; 
+    background-color:rgb(231, 231, 231);
+} */
+
+/* .ui-icon-closethick{
+    box-shadow:0;
+} */
+
+#mainInfo-butt-close{
+    float:right;
+    border:none;
+    background-color:rgb(231, 231, 231);
+    font-size:25px;
+    cursor:pointer;
+    transition:0.5s;
+}
+
+#mainInfo-butt-close:hover{
+    color:gray;
+}
+
+#mainInfo-title{
+    font-size:750%;
+}
+
+#mainInfo-info{
+    /* margin-bottom:5%; */
+    font-size:200%;
 }
 
 .transMain-enter-active, .transMain-leave-active{
@@ -25,12 +76,12 @@ body{
     width:auto;
     height:0.3em;
     font-size:400%;
-    background-color:rgb(29, 25, 25);
+    background-color:rgb(255, 255, 255);
     display:inline-block;
     margin:5px;
     text-align:center;
     padding:3%;
-    color:white;
+    color:rgb(0, 0, 0);
     cursor:pointer;
     transition:1s;
     margin-top:-10px;
@@ -47,7 +98,7 @@ body{
 
 #final a{
     text-decoration:none;
-    color:white;
+    color:black;
 }
 
 #linkFinal{
@@ -55,11 +106,11 @@ body{
 }
 
 #linkFinal:hover{
-    text-decoration:underline white;
+    text-decoration:underline black;
 }
 
 infLink:hover{
-    text-decoration:underline white;
+    text-decoration:underline black;
 }
 
 .inf{

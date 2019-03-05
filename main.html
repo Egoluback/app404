@@ -4,13 +4,27 @@
         <title>404</title>
         <link href = "css/main.css" rel = "stylesheet">
         <link href = "https://fonts.googleapis.com/css?family=Coiny|Felipa|Indie+Flower|PT+Sans+Narrow|Staatliches&amp;subset=cyrillic" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Chonburi|Indie+Flower|Nanum+Gothic|Srisakdi|ZCOOL+QingKe+HuangYou" rel="stylesheet">
+        <link href = "https://fonts.googleapis.com/css?family=Chonburi|Indie+Flower|Nanum+Gothic|Srisakdi|ZCOOL+QingKe+HuangYou" rel="stylesheet">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://unpkg.com/ionicons@4.4.4/dist/ionicons.js"></script>
+        <script src = "js/main.js"></script>
         <script src = "vue.js"></script>
         <script src = "jshelper/jshelper.js"></script>
-        <script src = "js/main.js"></script>
     </head>
     <body>
+        <div id = "mainInfo">
+            <button id = "mainInfo-butt-close" onclick = "changeIsShowedInfo()" title = "Скрыть">
+                <ion-icon name="close"></ion-icon>
+            </button>
+            <div id = "mainInfo-title">404</div>
+            <div id = "mainInfo-info">Страница не найдена.</div>
+            <div id = "mainInfo-train">Страница не найдена - попробуйте найти цифры от 1 до 404.</div>
+        </div>
+
         <div id = "page">
+
             <transition name = "transMain">    
                 <div id = "main" v-if = 'isMainVisible'>
                     <div class = "num" v-for = "(num,value) in arrData" @click = "init(arrData[value])" :id = "num">{{num}}</div>
@@ -29,7 +43,6 @@
         </div>
 
         <script>
-            
 
             Array.prototype.remove = function(value) {
                 let idx = this.indexOf(value);
@@ -62,7 +75,7 @@
                     isResults:false,
                     isPhone:false,
                     width:window.screen.width,
-                    height:window.screen.height
+                    height:window.screen.height,
                 },
 
                 created:function(){
@@ -72,9 +85,6 @@
                 methods:{
 
                     create:function(){
-                        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-                            this.isPhone = true;
-                        }
 
                         let valArr = [];
                         
@@ -120,13 +130,15 @@
                                     this.recordScore = this.score;
                                     this.isWin = true;
                                     this.isMainVisible = false;
-                                    this.isFinalVisible = true;
+                                    setTimeout(function(){
+                                        app.isFinalVisible = true;
+                                    },800);
                                     this.isResults = true;
-                                    if (isPhone){
-                                        document.getElementById('linkFinal').style.fontSize = getFontSize(true) + '%';
-                                        document.getElementById('infLink').style.fontSize = getFontSize(false) + '%';
-                                        document.getElementById('dopInf').style.fontSize = getFontSize(false) + '%';
-                                    }
+                                    // if (this.isPhone){
+                                    //     document.getElementById('linkFinal').style.fontSize = getFontSize(true) + '%';
+                                    //     document.getElementById('infLink').style.fontSize = getFontSize(false) + '%';
+                                    //     document.getElementById('dopInf').style.fontSize = getFontSize(false) + '%';
+                                    // }
 
                                     if (this.recordScore == 0)
                                         throw new Error("Ошибка:вы ни разу не нажали правильно.");
@@ -144,15 +156,18 @@
                                 this.recordScore = this.score;
                                 this.isLose = true;
                                 this.isMainVisible = false;
-                                this.isFinalVisible = true;
+                                setTimeout(function(){
+                                    app.isFinalVisible = true;
+                                },800);
+                                // this.isFinalVisible = true;
                                 if (this.recordScore == 0)
                                     throw new SyntaxError("Ошибка:вы ни разу не нажали правильно.");
                                 this.isResults = true;
-                                if (isPhone){
-                                    document.getElementById('linkFinal').style.fontSize = getFontSize(true) + '%';
-                                    document.getElementById('infLink').style.fontSize = getFontSize(false) + '%';
-                                    document.getElementById('dopInf').style.fontSize = getFontSize(false) + '%';
-                                }
+                                // if (this.isPhone){
+                                //     document.getElementById('linkFinal').style.fontSize = getFontSize(true) + '%';
+                                //     document.getElementById('infLink').style.fontSize = getFontSize(false) + '%';
+                                //     document.getElementById('dopInf').style.fontSize = getFontSize(false) + '%';
+                                // }
 
                             }catch(e){
                                 if (e.name == 'SyntaxError'){
@@ -256,6 +271,8 @@
                         this.isWin = false;
                         this.isLose = false;
                         this.isShowedDopInf = false;
+                        this.countNumbers = 25;
+                        this.finishValue = 30;
 
                         this.create();
 
