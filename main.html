@@ -5,27 +5,27 @@
         <link href = "css/main.css" rel = "stylesheet">
         <link href = "https://fonts.googleapis.com/css?family=Coiny|Felipa|Indie+Flower|PT+Sans+Narrow|Staatliches&amp;subset=cyrillic" rel="stylesheet">
         <link href = "https://fonts.googleapis.com/css?family=Chonburi|Indie+Flower|Nanum+Gothic|Srisakdi|ZCOOL+QingKe+HuangYou" rel="stylesheet">
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script src="https://unpkg.com/ionicons@4.4.4/dist/ionicons.js"></script>
+        <link rel = "stylesheet" href = "//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link href="https://unpkg.com/ionicons@4.4.4/dist/css/ionicons.min.css" rel="stylesheet">
+        <script src = "https://unpkg.com/ionicons@4.4.4/dist/ionicons.js"></script>
         <script src = "js/main.js"></script>
         <script src = "vue.js"></script>
         <script src = "jshelper/jshelper.js"></script>
     </head>
     <body>
-        <div id = "mainInfo">
-            <button id = "mainInfo-butt-close" onclick = "changeIsShowedInfo()" title = "Скрыть">
-                <ion-icon name="close"></ion-icon>
-            </button>
-            <div id = "mainInfo-title">404</div>
-            <div id = "mainInfo-info">Страница не найдена.</div>
-            <div id = "mainInfo-train">В таком случае, попробуйте найти цифры от 1 до 404.</div>
-            <div id = "mainInfo-link"><a href = "about.html" title = "Об игре">Подробнее...</a></div>
-        </div>
-
         <div id = "page">
-
+            <transition name = "mainInfoWindow">
+                <div id = "mainInfo" v-if = "isViewWindow">
+                    <button id = "mainInfo-butt-close" @click = "isViewWindow = !isViewWindow;" title = "Скрыть">
+                        <i class="icon ion-md-close"></i>
+                    </button>
+                    <div id = "mainInfo-title">404</div>
+                    <div id = "mainInfo-info">Страница не найдена.</div>
+                    <div id = "mainInfo-train">В таком случае, попробуйте найти цифры от 1 до 404.</div>
+                    <div id = "mainInfo-link"><a href = "about.html" title = "Об игре">Подробнее...</a></div>
+                </div>
+            </transition>
+            
             <transition name = "transMain">    
                 <div id = "main" v-if = 'isMainVisible'>
                     <div class = "num" v-for = "(num,value) in arrData" @click = "init(arrData[value])" :id = "num">{{num}}</div>
@@ -37,21 +37,19 @@
                     <a v-if = "isWin" href = "#" @click = "reload()" id = "linkFinal" title = "Начать с начала">Вы победили!</a>
                     <a v-if = "isLose" href = "#" @click = "reload()" id = "linkFinal" title = "Начать с начала">Вы проиграли!</a>
                     <br /><a href = "#" class = "inf" id = "infLink" @click = "changeIsShowed()" title = "Показать доп. информацию">Время игры:{{record}} секунд.</a>
-                    <p v-if = "isShowedDopInf && isResults" class = "dopInf">Вы потратили примерно {{Math.round(record / recordScore)}} секунд(ы) на каждый ход.</p>
-                    <p v-else-if = "!isResults">Дополнительная информация недоступна.</p>
+                    <transition name = "finalInfo">
+                        <p v-if = "isShowedDopInf && isResults" class = "dopInf">Вы потратили примерно {{Math.round(record / recordScore)}} секунд(ы) на каждый ход.</p>
+                    </transition>
+
+                    <transition name = "finalInfo2">
+                        <p v-if = "isShowedDopInf && isResults && isLose" class = "dopInf">Вы прошли {{recordScore}}/{{finishValue}}.</p>
+                    </transition>
+                    <p v-if = "!isResults">Дополнительная информация недоступна.</p>
                 </div>
             </transition>
         </div>
 
         <script>
-
-            Array.prototype.remove = function(value) {
-                let idx = this.indexOf(value);
-                if (idx != -1) {
-                    return this.splice(idx, 1);
-                }
-                return false;
-            }
 
             var record = 0;
 
@@ -77,6 +75,7 @@
                     isPhone:false,
                     width:window.screen.width,
                     height:window.screen.height,
+                    isViewWindow:true
                 },
 
                 created:function(){
@@ -84,7 +83,6 @@
                 },
 
                 methods:{
-
                     create:function(){
 
                         let valArr = [];
@@ -124,7 +122,7 @@
 
                             app.createEff()
 
-                            if (this.score === this.finishValue){
+                            if (this.score >= this.finishValue){
                                 try{
                                     this.record = record;
                                     this.recordScore = this.score;
@@ -135,8 +133,6 @@
                                         app.isFinalVisible = true;
                                     },800);
                                     
-                                    if (this.recordScore == 0)
-                                        throw new Error("Ошибка:вы ни разу не нажали правильно.");
                                     this.isResults = true;
 
                                 }catch(e){
@@ -159,6 +155,7 @@
 
                                 if (this.recordScore == 0)
                                     throw new SyntaxError("Ошибка:вы ни разу не нажали правильно.");
+
                                 this.isResults = true;
 
                             }catch(e){
@@ -195,7 +192,6 @@
                         'blue',
                         'grey',
                         'orange',
-                        // 'lightblue',
                         'black',
                         'brown'];
 
