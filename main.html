@@ -3,13 +3,15 @@
     <head>
         <title>404</title>
         <link href = "css/main.css" rel = "stylesheet">
+        <link href = "css/transitions.css" rel = "stylesheet">
         <link href = "https://fonts.googleapis.com/css?family=Coiny|Felipa|Indie+Flower|PT+Sans+Narrow|Staatliches&amp;subset=cyrillic" rel="stylesheet">
         <link href = "https://fonts.googleapis.com/css?family=Chonburi|Indie+Flower|Nanum+Gothic|Srisakdi|ZCOOL+QingKe+HuangYou" rel="stylesheet">
         <link rel = "stylesheet" href = "//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link href="https://unpkg.com/ionicons@4.4.4/dist/css/ionicons.min.css" rel="stylesheet">
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src = "https://unpkg.com/ionicons@4.4.4/dist/ionicons.js"></script>
         <script src = "js/main.js"></script>
-        <script src = "vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
         <script src = "jshelper/jshelper.js"></script>
     </head>
     <body>
@@ -21,7 +23,7 @@
                     </button>
                     <div id = "mainInfo-title">404</div>
                     <div id = "mainInfo-info">Страница не найдена.</div>
-                    <div id = "mainInfo-train">В таком случае, попробуйте найти цифры от 1 до 404.</div>
+                    <div id = "mainInfo-train">Найдите цифры от 1 до 404.</div>
                     <div id = "mainInfo-link"><a href = "about.html" title = "Об игре">Подробнее...</a></div>
                 </div>
             </transition>
@@ -36,14 +38,16 @@
                 <div id = "final" v-if = "isFinalVisible">
                     <a v-if = "isWin" href = "#" @click = "reload()" id = "linkFinal" title = "Начать с начала">Вы победили!</a>
                     <a v-if = "isLose" href = "#" @click = "reload()" id = "linkFinal" title = "Начать с начала">Вы проиграли!</a>
-                    <br /><a href = "#" class = "inf" id = "infLink" @click = "changeIsShowed()" title = "Показать доп. информацию">Время игры:{{record}} секунд.</a>
+                    <br /><a href = "#" class = "inf" id = "infLink" @click = "changeIsShowed()" title = "Показать доп. информацию">Время игры:<br />{{strRecord}}</a>
+                    
                     <transition name = "finalInfo">
-                        <p v-if = "isShowedDopInf && isResults" class = "dopInf">Вы потратили примерно {{Math.round(record / recordScore)}} секунд(ы) на каждый ход.</p>
+                        <p v-if = "isShowedDopInf && isResults" class = "dopInf" id = "dop-1">Вы тратили примерно {{Math.round(record / recordScore)}} секунд(ы) на каждый ход.</p>
                     </transition>
 
                     <transition name = "finalInfo2">
-                        <p v-if = "isShowedDopInf && isResults && isLose" class = "dopInf">Вы прошли {{recordScore}}/{{finishValue}}.</p>
+                        <p v-if = "isShowedDopInf && isResults && isLose" class = "dopInf" id = "dop-2">Вы прошли {{recordScore}}/{{finishValue}}.</p>
                     </transition>
+                    
                     <p v-if = "!isResults">Дополнительная информация недоступна.</p>
                 </div>
             </transition>
@@ -75,10 +79,14 @@
                     isPhone:false,
                     width:window.screen.width,
                     height:window.screen.height,
-                    isViewWindow:true
+                    isViewWindow:true,
+                    strRecord:""
                 },
 
                 created:function(){
+                    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+                        document.getElementsByTagName('body')[0].style.cssText = "width:" + this.width + "px";
+                    }
                     this.create();
                 },
 
@@ -86,6 +94,10 @@
                     create:function(){
 
                         let valArr = [];
+                        const windowWidth = document.getElementById('mainInfo').offsetWidth;
+                        const surfaceWidth = document.getElementById('page').offsetWidth;
+
+                        document.getElementById('mainInfo').style.cssText = "left:" + (surfaceWidth / 2 - windowWidth / 2) + "px;";
                         
                         for (let i = 1; i < this.countNumbers + 1; i++){
                             let rNum = jsH.getRandNum(1,this.countNumbers);
@@ -98,8 +110,25 @@
                         }
                     },
 
+                    getMinutesNum:function(seconds){
+                        let resMinutes = Math.trunc(seconds / 60);
+                        let resHours = Math.trunc(resMinutes / 60);
+                        let resSeconds = seconds - (resMinutes * 60);
+                        let res = resHours + " ч:" + resMinutes + " м:" + resSeconds + " c.";
+                        return res;
+                    },
+
                     changeIsShowed:function(){
                         this.isShowedDopInf = !this.isShowedDopInf;
+                    },
+
+                    changeFinalFont:function(){
+                        if (this.width < 900){
+                            setTimeout(function(){
+                                document.getElementById('linkFinal').style.cssText = "font-size:240%";
+                                document.getElementById('infLink').style.fontSize = "90%";
+                            },100);
+                        }
                     },
 
                     init:function(num){
@@ -126,11 +155,13 @@
                                 try{
                                     this.record = record;
                                     this.recordScore = this.score;
+                                    this.strRecord = this.getMinutesNum(this.record);
                                     this.isWin = true;
                                     this.isMainVisible = false;
 
                                     setTimeout(function(){
                                         app.isFinalVisible = true;
+                                        app.changeFinalFont();
                                     },800);
                                     
                                     this.isResults = true;
@@ -146,17 +177,18 @@
                             try{
                                 this.record = record;
                                 this.recordScore = this.score;
+                                this.strRecord = this.getMinutesNum(this.record);
                                 this.isLose = true;
                                 this.isMainVisible = false;
 
                                 setTimeout(function(){
                                     app.isFinalVisible = true;
+                                    app.changeFinalFont();
                                 },800);
 
                                 if (this.recordScore == 0)
                                     throw new SyntaxError("Ошибка:вы ни разу не нажали правильно.");
-
-                                this.isResults = true;
+                                app.isResults = true;
 
                             }catch(e){
                                 if (e.name == 'SyntaxError'){
@@ -170,19 +202,19 @@
                     getFontSize(isBig){
                         if (this.width > 1366 && this.height > 768){
                             if (!isBig)
-                                return jsH.getRandNum(150,300);
+                                return jsH.getRandNum(550,800);
                             else
-                                return jsH.getRandNum(340,400);
-                        }else if ((this.width < 1366 && this.height < 768) && this.width > 900){
+                                return jsH.getRandNum(400,700);
+                        }else if ((this.width <= 1366 && this.height <= 768) && this.width > 900){
                             if (!isBig)
-                                return jsH.getRandNum(120,250);
+                                return jsH.getRandNum(260,650);
                             else
-                                return jsH.getRandNum(300,340);
+                                return jsH.getRandNum(200,740);
                         }else{
                             if (!isBig)
-                                return jsH.getRandNum(60,120);
+                                return jsH.getRandNum(160,320);
                             else
-                                return jsH.getRandNum(100,130);
+                                return jsH.getRandNum(190,630);
                         }
                     },
 
@@ -263,6 +295,7 @@
                         this.isShowedDopInf = false;
                         this.countNumbers = 25;
                         this.finishValue = 30;
+                        this.strRecord = "";
 
                         this.create();
 

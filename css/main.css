@@ -7,15 +7,17 @@
 body{
     background-color:rgb(255, 255, 255);
     color:rgb(0, 0, 0);
+    min-width:600px;
 }
 
 #mainInfo{
     position:absolute;
-    left:32.5%;
+    /* left:32.5%; */
     top:15%;
     text-align:center;
     margin-bottom:5%;
     padding:1%;
+    width:300px;
     border-width:0;
     border-radius:5px;
     background-color:#ebe7e3;
@@ -47,96 +49,29 @@ body{
 #mainInfo-title{
     margin-top:10%;
     font-size:750%;
+    position:relative;
 }
 
 #mainInfo-info{
     font-size:200%;
 }
 
-
-.mainInfoWindow-enter-active, .mainInfoWindow-leave-active{
-    transition: all 0.8s;
-}
-
-.mainInfoWindow-enter, .mainInfoWindow-leave-to{
-    transform: translateY(-500%);
-}
-
-.mainInfoWindow-enter-active, .mainInfoWindow-leave-active{
-    transition: all 0.8s;
-}
-
-.mainInfoWindow-enter, .mainInfoWindow-leave-to{
-    transform: translateY(500%);
-}
-
-
-.transMain-enter-active, .transMain-leave-active{
-    transition: all 0.8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-
-.transMain-enter, .transMain-leave-to{
-    transform: translateY(-100%);
-}
-
-.transFinal-enter-active, .transFinal-leave-active{
-    transition: all 0.8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-
-.transFinal-enter, .transFinal-leave-to{
-    transform: translateX(-100%);
-}
-
-
-
-.finalInfo-enter-active, .finalInfo-leave-active{
-    transition: all 0.4s;
-}
-
-.finalInfo-enter, .finalInfo-leave-to{
-    transform: translateY(5000%);
-}
-
-.finalInfo-enter-active, .finalInfo-leave-active{
-    transition: all 0.4s;
-}
-
-.finalInfo-enter, .finalInfo-leave-to{
-    transform: translateY(5000%);
-}
-
-
-.finalInfo2-enter-active, .finalInfo2-leave-active{
-    transition: all 0.6s;
-}
-
-.finalInfo2-enter, .finalInfo2-leave-to{
-    transform: translateY(5000%);
-}
-
-.finalInfo2-enter-active, .finalInfo2-leave-active{
-    transition: all 0.6s;
-}
-
-.finalInfo2-enter, .finalInfo2-leave-to{
-    transform: translateY(5000%);
-}
-
-
 .num{
     width:auto;
-    height:0.3em;
-    font-size:400%;
+    /*height:0.3em;*/
+    /*font-size:800%;*/
     background-color:rgb(255, 255, 255);
     display:inline-block;
-    margin:5px;
     text-align:center;
-    padding:3%;
+    padding:0px;
     color:rgb(0, 0, 0);
     cursor:pointer;
     transition:1s;
-    margin-top:-10px;
+    margin-top:0px;
+    margin-bottom:0px;
 }
+
+
 
 #main{
     transition:1s;
