@@ -80,7 +80,8 @@
                     width:window.screen.width,
                     height:window.screen.height,
                     isViewWindow:true,
-                    strRecord:""
+                    strRecord:"",
+                    isReload:false
                 },
 
                 created:function(){
@@ -94,10 +95,12 @@
                     create:function(){
 
                         let valArr = [];
-                        const windowWidth = document.getElementById('mainInfo').offsetWidth;
-                        const surfaceWidth = document.getElementById('page').offsetWidth;
 
-                        document.getElementById('mainInfo').style.cssText = "left:" + (surfaceWidth / 2 - windowWidth / 2) + "px;";
+                        if (!this.isReload){
+                            const windowWidth = document.getElementById('mainInfo').offsetWidth;
+                            const surfaceWidth = document.getElementById('page').offsetWidth;
+                            document.getElementById('mainInfo').style.cssText = "left:" + (surfaceWidth / 2 - windowWidth / 2) + "px;";
+                        }
                         
                         for (let i = 1; i < this.countNumbers + 1; i++){
                             let rNum = jsH.getRandNum(1,this.countNumbers);
@@ -296,6 +299,7 @@
                         this.countNumbers = 25;
                         this.finishValue = 30;
                         this.strRecord = "";
+                        this.isReload = true;
 
                         this.create();
 
